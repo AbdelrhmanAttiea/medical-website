@@ -1,0 +1,21 @@
+/* styles.css */
+
+/* Body styles */
+body {
+    background-color: #f8f9fa; /* Light gray */
+}
+
+/* Container styles */
+.container {
+    padding-top: 50px;
+}
+
+/* Card styles */
+.card {
+    border: none; /* Remove border */
+}
+
+/* Form group label styles */
+.form-group label {
+    font-weight: bold;
+}
