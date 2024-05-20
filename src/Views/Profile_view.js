@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; // Import useParams from react-router-dom
 import { auth } from '../firebase';
 import { db } from '../firebase';
+import { Link } from 'react-router-dom';
 
 const ProfileView = () => {
   const { userId } = useParams(); // Extract userId from URL parameters
@@ -9,6 +10,7 @@ const ProfileView = () => {
   const [userAddresses, setUserAddresses] = useState([]);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [activeTab, setActiveTab] = useState('address');
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -59,7 +61,7 @@ const ProfileView = () => {
   }, [userId]); // Add userId to dependency array
 
   const handleFriendRequest = async () => {
-    await firestore.collection('friendRequests').add({
+    await db.collection('friendRequests').add({
       senderId: auth.currentUser.uid,
       receiverId: userId,
       status: 'pending',
@@ -70,13 +72,9 @@ const ProfileView = () => {
 
   // Function to handle tab clicks
   const handleTabClick = (tabName) => {
-    // Handle tab click logic here
+    setActiveTab(tabName);
   };
-  const handleMessageClick = () => {
-    // Redirect to chat page with user ID
-    history.push(`/chat/${userData.userId}`);
-  };
-  
+
     const handleSubmitComment = async (e) => {
     e.preventDefault();
     if (newComment.trim() === '') return;
@@ -84,12 +82,13 @@ const ProfileView = () => {
     await db.collection('comments').add({ 
       userId,
       comment: newComment,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: db.FieldValue.serverTimestamp(),
     });
 
-    setNewComment('');
+    setComments('');
   };
   return (
+    <>
     <div className="profile-view">
       <div className="flex flex-col h-screen profile">
         {/* User Info Section */}
@@ -116,10 +115,11 @@ const ProfileView = () => {
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center mr-2" onClick={handleFriendRequest}>
                   Send Friend Request
                 </button>
-                <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-				onClick={handleMessageClick}>
-                  Send Message
-                </button>
+                <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+             <Link to={`/chat/${userData.userId}`}>
+                Send Message
+                  </Link>
+</button>
               </div>
             </div>
           </div>
@@ -210,6 +210,7 @@ const ProfileView = () => {
         <button type="submit">Submit Comment</button>
       </form>
     </div>
+    </>
   );
 };
 

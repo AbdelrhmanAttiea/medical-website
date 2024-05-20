@@ -26,7 +26,7 @@ const FriendRequestsPage = () => {
     await requestRef.update({ status: 'accepted' });
 
     // Add sender as friend for current user
-    await firestore.collection('users')
+    await db.collection('users')
       .doc(auth.currentUser.uid)
       .collection('friends')
       .doc(requestData.senderId)

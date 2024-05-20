@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase'; // Updated import
 import { Link } from 'react-router-dom';
+import { auth } from "../firebase"; 
 import '../css/Chat_list.css';
 
 const Chat_list = () => {
@@ -8,7 +9,7 @@ const Chat_list = () => {
 
   useEffect(() => {
     // Fetch conversations/messages for the current user
-    const userId = firebase.auth().currentUser.uid;
+    const userId = auth().currentUser.uid;
     const unsubscribe = db.collection('messages') // Updated reference to 'db'
       .where('participants', 'array-contains', userId)
       .onSnapshot(snapshot => {

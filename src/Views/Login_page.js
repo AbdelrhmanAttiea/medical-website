@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "./firebase"; // Import firebase instance for authentication
+import { auth } from "../firebase"; // Import firebase instance for authentication
 
 const Login_page = () => {
   const [email, setEmail] = useState("");

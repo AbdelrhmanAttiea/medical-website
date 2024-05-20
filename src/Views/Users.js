@@ -12,7 +12,7 @@ const Users = () => {
         const usersSnapshot = await db.collection('users').get();
         const doctorList = [];
 
-        usersSnapshot.forEach(userDoc => {
+        usersSnapshot.forEach(async userDoc => {
           const userData = userDoc.data();
           const { name, image } = userData;
 

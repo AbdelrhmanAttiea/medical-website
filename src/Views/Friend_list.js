@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { firestore, auth } from '../firebase'; // Adjust the path as per your file structure
+import { db, auth } from '../firebase'; // Adjust the path as per your file structure
 import '../css/Friends.css';
 
 const Friend_list = () => {
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = firestore.collection('users')
+    const unsubscribe = db.collection('users')
       .doc(auth.currentUser.uid)
       .collection('friends')
       .onSnapshot(snapshot => {
